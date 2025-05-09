@@ -7,11 +7,14 @@ import { HeaderModule } from './shared/header/header.module';
 import { HttpClientModule } from '@angular/common/http';
 import { FooterModule } from './shared/footer/footer.module';
 import { PaymentComponent } from './features/payment-form/payment-form.component';
+import { YigitComponent } from './yigit/yigit.component';
+
 
 
 @NgModule({
   declarations: [
     AppComponent,
+    YigitComponent,
   ],
   imports: [
     BrowserModule,
