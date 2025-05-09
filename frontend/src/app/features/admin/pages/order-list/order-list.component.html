@@ -1,0 +1,33 @@
+<h2>🧾 Tüm Siparişler</h2>
+
+<table class="order-table">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Müşteri</th>
+      <th>Toplam</th>
+      <th>Durum</th>
+      <th>İşlemler</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let order of orders">
+      <td>{{ order.id }}</td>
+      <td>{{ order.customerName }}</td>
+      <td>{{ order.totalPrice | currency: 'TRY' }}</td>
+      <td>
+        <select class="status-dropdown"
+        [value]="order.status"
+        (change)="onStatusChange($event, order.id)">
+  <option value="PROCESSING">🔄 PROCESSING</option>
+  <option value="SHIPPED">🚚 SHIPPED</option>
+  <option value="DELIVERED">✅ DELIVERED</option>
+  <option value="CANCELLED">❌ CANCELLED</option>
+</select>
+      </td>
+      <td>
+        <button class="delete-btn" (click)="deleteOrder(order.id)">🗑️ Sil</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

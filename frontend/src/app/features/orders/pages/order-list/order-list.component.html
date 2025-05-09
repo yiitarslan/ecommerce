@@ -1,0 +1,26 @@
+<div class="orders-container">
+  <h2 class="section-title">🧾 Siparişlerim</h2>
+
+  <div *ngIf="orders.length === 0" class="empty-message">
+    Henüz bir siparişiniz yok.
+  </div>
+
+  <div *ngFor="let order of orders" class="order-card">
+    <div class="order-header">
+      <span>Sipariş #{{ order.id }}</span>
+      <span class="order-status" [ngClass]="order.status">{{ order.status }}</span>
+    </div>
+
+    <div class="order-items">
+      <div *ngFor="let item of order.items" class="order-item">
+        <div class="product-name">{{ item.productName }}</div>
+        <div class="product-quantity">{{ item.quantity }} adet</div>
+        <div class="product-price">{{ item.unitPrice * item.quantity | currency: 'TRY' }}</div>
+      </div>
+    </div>
+
+    <div class="order-footer">
+      Toplam: <strong>{{ order.totalPrice | currency: 'TRY' }}</strong>
+    </div>
+  </div>
+</div>

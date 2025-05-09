@@ -45,6 +45,11 @@ const routes: Routes = [
     path: 'sepetim',
     loadChildren: () => import('./features/cart/cart.module').then(m => m.CartModule)
   },
+  {
+  path: 'siparislerim',
+  loadChildren: () =>import('./features/orders/orders.module').then((m) => m.OrdersModule)
+}
+
 ]
   
 @NgModule({

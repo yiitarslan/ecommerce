@@ -1,41 +1,29 @@
 package com.ecommerce.backend.service;
 
-import com.ecommerce.backend.model.CartItem;
-import com.ecommerce.backend.model.Order;
-import com.ecommerce.backend.model.OrderItem;
-import com.ecommerce.backend.model.OrderStatus;
-import com.ecommerce.backend.model.User;
+import com.ecommerce.backend.model.*;
 import com.ecommerce.backend.repository.CartItemRepository;
 import com.ecommerce.backend.repository.OrderRepository;
+import com.ecommerce.backend.repository.PaymentRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * ✅ OrderService — Sipariş işlemlerini yöneten servis katmanı.
- * - Sipariş oluşturma
- * - Sipariş görüntüleme
- * - Sipariş durumunu güncelleme işlemlerini içerir.
- */
 @Service
 public class OrderService {
 
     private final OrderRepository orderRepository;
     private final CartItemRepository cartItemRepository;
+    private final PaymentRepository paymentRepository; // ✅ EKLENDİ
 
     public OrderService(OrderRepository orderRepository,
-                        CartItemRepository cartItemRepository) {
+                        CartItemRepository cartItemRepository,
+                        PaymentRepository paymentRepository) { // ✅ CONSTRUCTOR'A EKLENDİ
         this.orderRepository = orderRepository;
         this.cartItemRepository = cartItemRepository;
+        this.paymentRepository = paymentRepository;
     }
 
-    /**
-     * 1️⃣ Sepetteki ürünlerle sipariş oluşturur.
-     * - Sepet boşsa hata fırlatır.
-     * - Ürünler `OrderItem` nesnesine dönüştürülüp yeni siparişe eklenir.
-     * - `OrderStatus` varsayılan olarak `PENDING` atanır.
-     */
     public Order createOrderFromCart(User user) {
         List<CartItem> cartItems = cartItemRepository.findByUser(user);
         if (cartItems.isEmpty()) {
@@ -50,7 +38,7 @@ public class OrderService {
             item.setProductName(cartItem.getProduct().getName());
             item.setQuantity(cartItem.getQuantity());
             item.setUnitPrice(cartItem.getProduct().getPrice());
-            item.setOrder(null); // geçici olarak null, sonra set edilir
+            item.setOrder(null);
             orderItems.add(item);
             totalPrice += item.getTotalPrice();
         }
@@ -60,51 +48,55 @@ public class OrderService {
         order.setCustomerName(user.getFullName());
         order.setItems(orderItems);
         order.setTotalPrice(totalPrice);
-        order.setStatus(OrderStatus.PENDING); // 🔁 STATUS = PENDING
+        order.setStatus(OrderStatus.PENDING);
 
         for (OrderItem item : orderItems) {
             item.setOrder(order);
         }
 
-        return orderRepository.save(order);
+        Order saved = orderRepository.save(order);
+        saved.setStatus(OrderStatus.PENDING);
+        return orderRepository.save(saved);
     }
 
-    /**
-     * 2️⃣ Kullanıcının tüm sipariş geçmişini getirir.
-     */
     public List<Order> getAllOrders(User user) {
         return orderRepository.findByUser(user);
     }
 
-    /**
-     * 3️⃣ Kullanıcının belirli bir siparişini döner.
-     * Sadece o kullanıcıya aitse döner, aksi halde hata verir.
-     */
     public Order getOrderById(Long id, User user) {
         return orderRepository.findByIdAndUser(id, user)
                 .orElseThrow(() -> new RuntimeException("Sipariş bulunamadı."));
     }
 
-    /**
-     * 4️⃣ (Admin için) Siparişi ID ile getirir. Kullanıcı kontrolü yapılmaz.
-     */
     public Order getOrderById(Long id) {
         return orderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Sipariş bulunamadı."));
     }
 
-    /**
-     * 5️⃣ Siparişi günceller (örn: status değişikliği, adres güncellemesi, vs.).
-     */
     public Order saveOrder(Order order) {
         return orderRepository.save(order);
     }
 
-    /**
-     * 6️⃣ Belirli bir kullanıcıya ait ve belirli bir duruma sahip siparişleri getirir.
-     * Örn: PENDING siparişleri listelemek için.
-     */
     public List<Order> getOrdersByStatus(User user, OrderStatus status) {
         return orderRepository.findByUserAndStatus(user, status);
+    }
+
+    public List<Order> getAllOrdersForAdmin() {
+        return orderRepository.findAll();
+    }
+
+    public boolean existsById(Long id) {
+        return orderRepository.existsById(id);
+    }
+
+    public void deleteOrderById(Long id) {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Sipariş bulunamadı"));
+
+        // ✅ İlişkili ödeme varsa sil
+        paymentRepository.findByOrder(order).ifPresent(paymentRepository::delete);
+
+        // ✅ Siparişi sil
+        orderRepository.delete(order);
     }
 }

@@ -10,7 +10,7 @@ import { PaymentComponent } from './payment-form.component';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    PaymentFormRoutingModule
+    PaymentFormRoutingModule,
   ]
 })
 export class PaymentFormModule {}

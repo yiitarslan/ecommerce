@@ -1,0 +1,88 @@
+.orders-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 0 20px;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.section-title {
+  text-align: center;
+  margin-bottom: 32px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #222;
+}
+
+.empty-message {
+  text-align: center;
+  color: #777;
+  font-style: italic;
+}
+
+.order-card {
+  background-color: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 600;
+  color: #444;
+  margin-bottom: 12px;
+
+  .order-status {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 13px;
+    text-transform: uppercase;
+    color: white;
+
+    &.PENDING { background-color: #ffc107; }
+    &.PROCESSING { background-color: #0dcaf0; }
+    &.SHIPPED { background-color: #0d6efd; }
+    &.DELIVERED { background-color: #198754; }
+    &.CANCELLED { background-color: #dc3545; }
+  }
+}
+
+.order-items {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+  color: #333;
+
+  .product-name {
+    flex: 2;
+  }
+
+  .product-quantity {
+    flex: 1;
+    text-align: center;
+  }
+
+  .product-price {
+    flex: 1;
+    text-align: right;
+  }
+}
+
+.order-footer {
+  text-align: right;
+  font-size: 16px;
+  font-weight: 600;
+  color: #111;
+  border-top: 1px solid #ddd;
+  padding-top: 10px;
+}

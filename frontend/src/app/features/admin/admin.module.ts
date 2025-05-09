@@ -7,6 +7,7 @@ import { UserListComponent } from './pages/user-list/user-list.component';
 import { ProductListComponent } from './pages/product-list/product-list.component';
 import { AddSellerComponent } from './pages/add-seller/add-seller.component';
 import { FormsModule } from '@angular/forms';
+import { OrderListComponent } from './pages/order-list/order-list.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { FormsModule } from '@angular/forms';
     DashboardComponent,
     UserListComponent,
     ProductListComponent,
-    AddSellerComponent
+    AddSellerComponent,
+    OrderListComponent
   ],
   imports: [
     CommonModule,

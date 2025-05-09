@@ -1,27 +1,22 @@
 <div class="payment-container">
-  <h2>Ödeme Yap</h2>
+  <h2>💳 Güvenli Ödeme</h2>
 
   <form [formGroup]="paymentForm" (ngSubmit)="startPayment()">
-    <!-- Tutar -->
     <div class="field">
       <label>Tutar (TRY)</label>
       <input [value]="totalAmount | currency:'TRY'" disabled />
     </div>
 
-    <!-- Kart Bilgisi -->
     <div class="field">
       <label>Kart Bilgileri</label>
       <div #cardInfo class="card-element"></div>
     </div>
 
-    <!-- 🔴 Hata -->
     <div *ngIf="errorMessage" class="message error">{{ errorMessage }}</div>
-
-    <!-- ✅ Başarı -->
     <div *ngIf="successMessage" class="message success">{{ successMessage }}</div>
 
     <button type="submit" [disabled]="loading">
-      {{ loading ? 'Ödeniyor…' : 'Öde' }}
+      {{ loading ? 'Ödeniyor…' : 'Ödemeyi Tamamla' }}
     </button>
   </form>
 </div>

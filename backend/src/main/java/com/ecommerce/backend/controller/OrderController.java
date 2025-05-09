@@ -3,30 +3,28 @@ package com.ecommerce.backend.controller;
 import com.ecommerce.backend.model.Order;
 import com.ecommerce.backend.model.OrderStatus;
 import com.ecommerce.backend.model.User;
-import com.ecommerce.backend.service.OrderService;
 import com.ecommerce.backend.repository.UserRepository;
+import com.ecommerce.backend.security.JwtTokenProvider;
+import com.ecommerce.backend.service.OrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/**
- * ✅ OrderController — Sipariş işlemlerini yöneten REST Controller.
- * - Sipariş oluşturma
- * - Sipariş listeleme (hepsi / sadece pending olanlar)
- * - Sipariş görüntüleme
- * - Sipariş durumu güncelleme
- */
 @RestController
 @RequestMapping("/orders")
 public class OrderController {
 
     private final OrderService orderService;
     private final UserRepository userRepository;
+    private final JwtTokenProvider jwtTokenProvider; // ✅ doğru sınıf
 
-    public OrderController(OrderService orderService, UserRepository userRepository) {
+    public OrderController(OrderService orderService,
+                           UserRepository userRepository,
+                           JwtTokenProvider jwtTokenProvider) { // ✅ constructor'da inject
         this.orderService = orderService;
         this.userRepository = userRepository;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     /**
@@ -101,4 +99,32 @@ public class OrderController {
         Order updated = orderService.saveOrder(order);
         return ResponseEntity.ok(updated);
     }
+
+    /**
+     * 6️⃣ JWT token'dan email alarak kullanıcıya özel siparişleri getirir.
+     * Endpoint: GET /orders/user
+     * Authorization: Bearer <token>
+     */
+    @GetMapping("/user")
+    public List<Order> getUserOrders(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+        String email = jwtTokenProvider.extractEmail(token); // ✅ JwtTokenProvider ile email al
+        User user = userRepository.findByEmail(email).orElseThrow();
+        return orderService.getAllOrders(user);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Order>> getAllOrdersForAdmin() {
+        return ResponseEntity.ok(orderService.getAllOrdersForAdmin());
+}
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteOrder(@PathVariable Long id) {
+    if (!orderService.existsById(id)) {
+        return ResponseEntity.notFound().build();
+    }
+    orderService.deleteOrderById(id);
+    return ResponseEntity.noContent().build();
+}
+
 }

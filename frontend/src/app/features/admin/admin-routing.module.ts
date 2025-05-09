@@ -5,6 +5,7 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { UserListComponent } from './pages/user-list/user-list.component';
 import { ProductListComponent } from './pages/product-list/product-list.component';
 import { AddSellerComponent } from './pages/add-seller/add-seller.component';
+import { OrderListComponent } from './pages/order-list/order-list.component';
 
 const routes: Routes = [
   {
@@ -18,7 +19,8 @@ const routes: Routes = [
           { path: '', redirectTo: 'users', pathMatch: 'full' },
           { path: 'users', component: UserListComponent },
           { path: 'products', component: ProductListComponent },
-          { path: 'add-seller', component: AddSellerComponent }
+          { path: 'add-seller', component: AddSellerComponent },
+          { path: 'orders', component: OrderListComponent }
         ]
       }
     ]
