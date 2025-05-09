@@ -1,0 +1,34 @@
+<section class="user-detail-wrapper" *ngIf="user">
+  <div class="user-card" [class.editing]="editMode">
+    <h2>Kullanıcı Bilgileri</h2>
+
+    <div class="info-block">
+      <label>Ad Soyad:</label>
+      <span *ngIf="user">{{ user.fullName }}</span>
+
+    </div>
+
+    <div class="info-block" *ngIf="!editMode">
+      <label>E-posta:</label>
+      <span>{{ user.email }}</span>
+    </div>
+
+    <div class="info-block" *ngIf="editMode">
+      <label for="newEmail">Yeni E-posta:</label>
+      <input id="newEmail" [(ngModel)]="newEmail" />
+    </div>
+
+    <div class="info-block" *ngIf="editMode">
+      <label for="newPassword">Yeni Şifre:</label>
+      <input id="newPassword" [(ngModel)]="newPassword" type="password" />
+    </div>
+
+    <div class="actions">
+      <button *ngIf="!editMode" (click)="enableEdit()">Bilgileri Güncelle</button>
+      <div *ngIf="editMode">
+        <button class="save-btn" (click)="saveChanges()">Kaydet</button>
+        <button class="cancel-btn" (click)="cancelEdit()">İptal</button>
+      </div>
+    </div>
+  </div>
+</section>

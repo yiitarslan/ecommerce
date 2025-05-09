@@ -1,0 +1,46 @@
+<header class="navbar">
+  <div class="logo-area">
+    <img src="assets/yimu_logo.png" alt="YIMU Logo" class="logo-img" />
+    <div class="logo-text">
+      YIMU
+      <span class="logo-slogan">⭐️Kolaylığı Ayağına Getirir!</span>
+    </div>
+  </div>
+
+  <nav class="nav-links">
+    <a routerLink="/">Anasayfa</a>
+    <a routerLink="/kategori/electronics">Electronics</a>
+    <a routerLink="/kategori/women's clothing">Women's Clothing</a>
+    <a routerLink="/kategori/men's clothing">Men's Clothing</a>
+    <a routerLink="/kategori/jewelery">Jewelery</a>
+    <a routerLink="/favorilerim">Favorilerim</a>
+  </nav>
+
+  <div class="actions">
+    <input
+      [(ngModel)]="searchText"
+      (ngModelChange)="onSearchChange()"
+      placeholder="Ürün ara..."
+      class="search-input"
+    />
+
+    <a routerLink="/sepetim" class="cart-btn">
+      🛒 <span class="count">{{ cartItemCount }}</span>
+    </a>
+
+    <ng-container *ngIf="!isLoggedIn">
+      <button class="login-btn" routerLink="/giris">Giriş Yap</button>
+    </ng-container>
+
+    <ng-container *ngIf="isLoggedIn">
+      <div class="user-dropdown" (mouseenter)="showDropdown()" (mouseleave)="hideDropdown()">
+        <button class="user-btn">👤 {{ displayName }}</button>
+        <ul class="dropdown-menu" *ngIf="isDropdownOpen">
+          <li><a routerLink="/hesabim">Hesabım</a></li>
+          <li><a routerLink="/siparislerim">Siparişlerim</a></li>
+          <li><button (click)="logout()">Çıkış Yap</button></li>
+        </ul>
+      </div>
+    </ng-container>
+  </div>
+</header>

@@ -1,0 +1,28 @@
+<section class="category-products">
+  <h2>{{ categoryName | titlecase }} Ürünleri</h2>
+
+ <!-- 🔽 Şık Sıralama Barı -->
+<div class="sort-bar">
+  <label for="sort">Sırala:</label>
+  <select id="sort" [(ngModel)]="sortOption" (change)="sortProducts()">
+    <option value="">Varsayılan</option>
+    <option value="priceLow">Fiyat: Düşükten Yükseğe</option>
+    <option value="priceHigh">Fiyat: Yüksekten Düşüğe</option>
+    <option value="nameAsc">İsme Göre A-Z</option>
+    <option value="nameDesc">İsme Göre Z-A</option>
+  </select>
+</div>
+
+  <div class="product-list">
+    <div
+      *ngFor="let product of products"
+      class="product-card"
+      (click)="goToDetail(product.id)"
+      style="cursor: pointer"
+    >
+      <img [src]="product.imageUrl" alt="{{ product.name }}" />
+      <h3>{{ product.name }}</h3>
+      <p>{{ product.price | currency: 'TRY' }}</p>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,15 @@
+<div class="admin-wrapper">
+  <aside class="sidebar">
+    <h2 class="logo">🛒 Admin Panel</h2>
+    <nav>
+      <a routerLink="" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">🏠 Anasayfa</a>
+      <a routerLink="users" routerLinkActive="active">👥 Kullanıcılar</a>
+      <a routerLink="products" routerLinkActive="active">📦 Ürünler</a>
+      <a routerLink="add-seller" routerLinkActive="active">➕ Seller Ekle</a>
+    </nav>
+  </aside>
+
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

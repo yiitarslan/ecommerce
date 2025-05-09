@@ -1,0 +1,69 @@
+<div class="cart-wrapper" *ngIf="cartItems.length > 0; else emptyCart">
+  <h2>Sepetim</h2>
+
+  <div *ngFor="let item of cartItems" class="cart-item">
+    <div class="product-info">
+      <img
+        [src]="item.product.imageUrl"
+        [alt]="item.product.name"
+        class="product-image"
+      />
+      <div class="item-details">
+        <h3>{{ item.product.name }}</h3>
+        <p>{{ item.product.price | currency:'TRY' }}</p>
+      </div>
+    </div>
+
+    <div class="actions">
+      <div class="quantity">
+        <button
+          type="button"
+          (click)="decreaseQuantity(item)"
+          class="quantity-btn"
+          [disabled]="item.quantity <= 1"
+        >−</button>
+
+        <input
+          [(ngModel)]="item.quantity"
+          [ngModelOptions]="{ standalone: true }"
+          disabled
+          class="quantity-input"
+        />
+
+        <button
+          type="button"
+          (click)="increaseQuantity(item)"
+          class="quantity-btn"
+        >+</button>
+      </div>
+      <div
+        class="delete-btn"
+        (click)="removeFromCart(item)"
+        title="Ürünü Sil"
+      >🗑️</div>
+    </div>
+
+    <div class="total-price">
+      {{ (item.product.price * item.quantity) | currency:'TRY' }}
+    </div>
+  </div>
+
+  <div class="cart-summary">
+    <div class="summary-card">
+      <span class="total-label">Toplam:</span>
+      <span class="total-amount">{{ totalPrice | currency:'TRY' }}</span>
+    </div>
+    <button class="checkout-btn" routerLink="/odeme">Satın Al</button>
+  </div>
+</div>
+
+<ng-template #emptyCart>
+  <div class="empty-cart-container">
+    <div class="empty-cart-card">
+      <div class="empty-icon">🛒</div>
+      <h3>Sepetiniz Şu Anda Boş</h3>
+      <p>Favori ürünlerinizi keşfetmek için hemen alışverişe başlayın!</p>
+      <button class="continue-btn" routerLink="/">Alışverişe Devam Et</button>
+    </div>
+  </div>
+</ng-template>

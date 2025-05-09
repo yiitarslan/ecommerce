@@ -1,0 +1,28 @@
+<h2>🛒 Ürün Listesi</h2>
+
+<div class="table-wrapper">
+  <table class="admin-table">
+    <thead>
+      <tr>
+        <th>📦 Ad</th>
+        <th>🏷️ Kategori</th>
+        <th>💰 Fiyat</th>
+        <th class="hide-on-mobile">📝 Açıklama</th>
+        <th>⚙️ İşlem</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of products">
+        <td>{{ product.name }}</td>
+        <td>{{ product.category }}</td>
+        <td>{{ product.price | currency: 'TRY' }}</td>
+        <td class="hide-on-mobile">{{ product.description }}</td>
+        <td>
+          <button class="btn-danger" (click)="deleteProduct(product.id)" [disabled]="isDeleting">
+            {{ isDeleting ? 'Siliniyor...' : '🗑️ Sil' }}
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

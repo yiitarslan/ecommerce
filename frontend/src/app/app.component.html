@@ -1,0 +1,6 @@
+<!-- Sadece admin veya seller değilse göster -->
+<app-header *ngIf="!isAdminOrSellerRoute()"></app-header>
+
+<router-outlet></router-outlet>
+
+<app-footer *ngIf="!isAdminOrSellerRoute()"></app-footer>

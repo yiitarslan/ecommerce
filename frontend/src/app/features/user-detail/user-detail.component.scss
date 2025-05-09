@@ -1,0 +1,97 @@
+.user-detail-wrapper {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.user-card {
+  width: 100%;
+  max-width: 480px;
+  background-color: #fff;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.user-card.editing {
+  border: 2px solid #6c2bd9;
+}
+
+.user-card h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #6c2bd9;
+}
+
+.info-block {
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.info-block label {
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: #444;
+}
+
+.info-block span {
+  background: #f8f8f8;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.info-block input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  transition: border 0.2s;
+}
+
+.info-block input:focus {
+  border-color: #6c2bd9;
+  outline: none;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+.save-btn {
+  background-color: #6c2bd9;
+  color: white;
+}
+
+.cancel-btn {
+  background-color: #e0e0e0;
+  color: #333;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

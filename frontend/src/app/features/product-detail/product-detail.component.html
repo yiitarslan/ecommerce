@@ -1,0 +1,37 @@
+<section class="detail-wrapper" *ngIf="product as p">
+  <div class="detail-card">
+    <!-- Sol taraf -->
+    <div class="image-section">
+      <img [src]="p.imageUrl" [alt]="p.name" />
+    </div>
+
+    <!-- Sağ taraf -->
+    <div class="info-section">
+      <h2 class="title">{{ p.name }}</h2>
+      <p class="category">{{ p.category.name | titlecase }}</p>
+      <p class="price">{{ p.price | currency: 'TRY' }}</p>
+      <p class="description">
+        {{ p.description }}
+      </p>
+      
+
+
+      <div class="size-select">
+        <label>Beden:</label>
+        <div class="size-options">
+          <button>S</button>
+          <button>M</button>
+          <button>L</button>
+          <button>XL</button>
+        </div>
+      </div>
+
+      <div class="size-guide-section">
+        <button class="toggle-guide">📏 Beden Kılavuzu</button>
+      </div>
+
+      <button class="add-btn" (click)="sepeteEkle()">Sepete Ekle</button>
+
+    </div>
+  </div>
+</section>

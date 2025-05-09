@@ -1,0 +1,46 @@
+<section class="login-wrapper">
+  <h2>Giriş Yap</h2>
+
+  <!-- Form başlangıcı -->
+  <form (ngSubmit)="login()" #loginForm="ngForm">
+    <!-- E-posta alanı -->
+    <label for="email">E-posta</label>
+    <input
+      id="email"
+      type="email"
+      [(ngModel)]="email"
+      name="email"
+      required
+      email
+      #emailField="ngModel"
+    />
+    <div *ngIf="emailField.invalid && emailField.touched" class="error">
+      Geçerli bir e-posta giriniz.
+    </div>
+
+    <!-- Şifre alanı -->
+    <label for="password">Şifre</label>
+    <input
+      id="password"
+      type="password"
+      [(ngModel)]="password"
+      name="password"
+      required
+      minlength="6"
+      #passwordField="ngModel"
+    />
+    <div *ngIf="passwordField.invalid && passwordField.touched" class="error">
+      Şifre en az 6 karakter olmalı.
+    </div>
+
+    <!-- Giriş butonu -->
+    <button type="submit">Giriş Yap</button>
+
+  </form>
+
+  <!-- Diğer seçenekler -->
+  <div class="options">
+    <button type="button" (click)="goToRegister()" class="link-btn">Kayıt Ol</button>
+    <a routerLink="/giris/sifremi-unuttum">Şifremi Unuttum</a>
+  </div>
+</section>

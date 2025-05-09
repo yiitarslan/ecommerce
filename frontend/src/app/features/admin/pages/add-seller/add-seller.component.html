@@ -1,0 +1,18 @@
+<h2>➕ Yeni Seller Ekle</h2>
+
+<p *ngIf="message" [style.color]="message.includes('✅') ? 'green' : 'red'">
+  {{ message }}
+</p>
+
+<form (ngSubmit)="registerSeller()" class="form">
+  <label>Ad Soyad</label>
+  <input [(ngModel)]="fullName" name="fullName" required />
+
+  <label>E-posta</label>
+  <input [(ngModel)]="email" name="email" type="email" required />
+
+  <label>Şifre</label>
+  <input [(ngModel)]="password" name="password" type="password" required />
+
+  <button type="submit">Ekle</button>
+</form>

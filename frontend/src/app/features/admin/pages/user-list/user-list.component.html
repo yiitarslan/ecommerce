@@ -1,0 +1,24 @@
+<h2>👥 Kullanıcı Listesi</h2>
+
+<table class="admin-table">
+  <thead>
+    <tr>
+      <th>👤 Ad Soyad</th>
+      <th>📧 Email</th>
+      <th>🛡️ Rol</th>
+      <th>⚙️ İşlem</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of users">
+      <td>{{ user.fullName }}</td>
+      <td>{{ user.email }}</td>
+      <td>
+        <span class="badge" [ngClass]="user.role.toLowerCase()">{{ user.role }}</span>
+      </td>
+      <td>
+        <button class="btn-danger" (click)="deleteUser(user.id)">🚫 Banla</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

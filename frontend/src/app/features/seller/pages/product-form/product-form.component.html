@@ -1,0 +1,43 @@
+<div class="form-wrapper">
+    <h2>📝 Ürünü Düzenle</h2>
+  
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Ürün Adı</label>
+          <input type="text" formControlName="name" />
+        </div>
+  
+        <div class="form-group">
+          <label>Açıklama</label>
+          <textarea formControlName="description"></textarea>
+        </div>
+  
+        <div class="form-group">
+          <label>Görsel URL</label>
+          <input type="text" formControlName="imageUrl" />
+        </div>
+  
+        <div class="form-group">
+          <label>Fiyat (₺)</label>
+          <input type="number" formControlName="price" />
+        </div>
+  
+        <div class="form-group">
+          <label>Stok</label>
+          <input type="number" formControlName="stock" />
+        </div>
+  
+        <div class="form-group">
+          <label>Kategori</label>
+          <select formControlName="categoryId">
+            <option value="">Kategori Seçiniz</option>
+            <option *ngFor="let c of categories" [value]="c.id">{{ c.name }}</option>
+          </select>
+        </div>
+      </div>
+  
+      <button class="submit-btn" type="submit">💾 Güncelle</button>
+    </form>
+  </div>
+  
