@@ -46,19 +46,24 @@ export class PaymentComponent implements OnInit, AfterViewInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    this.cartService.loadCartItems();
-    this.paymentForm = this.fb.group({
-      amount: ['']
-    });
+  this.paymentForm = this.fb.group({ amount: [''] });
 
+  // Sepeti yükle ve ardından totalAmount güncelle
+  this.cartService.loadCartItems();
+
+  // Sepetin yüklenmesini beklemek için kısa bir bekleme süresi tanımla
+  setTimeout(async () => {
     this.totalAmount = this.cartService.getCartTotal();
 
     this.stripe = await loadStripe('pk_test_51RLM5O4DrMRzjlZKE38GRB99WQRQXD37rdQ8YEo3J0J34Gmocu0WIeF2FIRYsIAqoqIqTs0JfEKG8aaNHMnzPZ6D00CVZNHvPT');
     if (this.stripe) {
       this.elements = this.stripe.elements();
       this.card = this.elements.create('card');
+      this.card.mount(this.cardInfo.nativeElement); // güvenle mount edebilirsin
     }
-  }
+  }, 300); // 300ms sonra sepet verisi %99 hazırdır
+}
+
 
   ngAfterViewInit(): void {
     setTimeout(() => {
@@ -106,6 +111,7 @@ export class PaymentComponent implements OnInit, AfterViewInit {
                     orderId: orderId,
                     amount: amount,
                     paymentMethod: 'CREDIT_CARD',
+                    paymentIntentId: result.paymentIntent.id, // 🔥 ekle
                     success: true
                   }).subscribe({
                     next: (res) => {

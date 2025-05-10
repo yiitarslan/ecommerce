@@ -1,4 +1,4 @@
-<h2>🧾 Tüm Siparişler</h2>
+<h2 class="section-title">🧾 Tüm Siparişler</h2>
 
 <table class="order-table">
   <thead>
@@ -17,13 +17,13 @@
       <td>{{ order.totalPrice | currency: 'TRY' }}</td>
       <td>
         <select class="status-dropdown"
-        [value]="order.status"
-        (change)="onStatusChange($event, order.id)">
-  <option value="PROCESSING">🔄 PROCESSING</option>
-  <option value="SHIPPED">🚚 SHIPPED</option>
-  <option value="DELIVERED">✅ DELIVERED</option>
-  <option value="CANCELLED">❌ CANCELLED</option>
-</select>
+                [value]="order.status"
+                (change)="onStatusChange($event, order.id)">
+          <option value="PROCESSING">🔄 PROCESSING</option>
+          <option value="SHIPPED">🚚 SHIPPED</option>
+          <option value="DELIVERED">✅ DELIVERED</option>
+          <option value="CANCELLED">❌ CANCELLED</option>
+        </select>
       </td>
       <td>
         <button class="delete-btn" (click)="deleteOrder(order.id)">🗑️ Sil</button>

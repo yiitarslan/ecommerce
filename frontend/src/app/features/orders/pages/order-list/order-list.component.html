@@ -1,26 +1,62 @@
-<div class="orders-container">
-  <h2 class="section-title">🧾 Siparişlerim</h2>
+<div class="orders-wrapper">
+  <!-- Sidebar -->
+  <aside class="order-sidebar">
+    <button [class.active]="selectedView === 'active'" (click)="selectView('active')">🟢 Aktif Siparişler</button>
+    <button [class.active]="selectedView === 'past'" (click)="selectView('past')">📦 Geçmiş Siparişler</button>
+  </aside>
 
-  <div *ngIf="orders.length === 0" class="empty-message">
-    Henüz bir siparişiniz yok.
-  </div>
+  <!-- Content -->
+  <section class="order-content">
+    <h2 class="section-title">🧾 Siparişlerim</h2>
 
-  <div *ngFor="let order of orders" class="order-card">
-    <div class="order-header">
-      <span>Sipariş #{{ order.id }}</span>
-      <span class="order-status" [ngClass]="order.status">{{ order.status }}</span>
-    </div>
+    <!-- Aktif Siparişler -->
+    <ng-container *ngIf="selectedView === 'active'">
+      <div *ngIf="activeOrders.length === 0" class="empty-message">Aktif siparişiniz yok.</div>
+      <div *ngFor="let order of activeOrders" class="order-card">
+        <div class="order-header">
+          <span>Sipariş #{{ order.id }}</span>
+          <span class="order-status" [ngClass]="order.status">{{ order.status }}</span>
+        </div>
+        <div class="order-items">
+          <div *ngFor="let item of order.items" class="order-item">
+            <div class="product-name">{{ item.productName }}</div>
+            <div class="product-quantity">{{ item.quantity }} adet</div>
+            <div class="product-price">{{ item.unitPrice * item.quantity | currency: 'TRY' }}</div>
+          </div>
+        </div>
+        <div class="order-footer">
 
-    <div class="order-items">
-      <div *ngFor="let item of order.items" class="order-item">
-        <div class="product-name">{{ item.productName }}</div>
-        <div class="product-quantity">{{ item.quantity }} adet</div>
-        <div class="product-price">{{ item.unitPrice * item.quantity | currency: 'TRY' }}</div>
+          <!-- İptal Et butonu sadece PROCESSING siparişlerde -->
+        <!-- Sadece PROCESSING siparişlerde gösterilecek -->
+<button *ngIf="order.status === 'PROCESSING'"
+        class="refund-button"
+        (click)="refundPayment(order.id)">
+  İade Et
+</button>
+
+        </div>
       </div>
-    </div>
+    </ng-container>
 
-    <div class="order-footer">
-      Toplam: <strong>{{ order.totalPrice | currency: 'TRY' }}</strong>
-    </div>
-  </div>
+    <!-- Geçmiş Siparişler -->
+    <ng-container *ngIf="selectedView === 'past'">
+      <div *ngIf="pastOrders.length === 0" class="empty-message">Geçmiş siparişiniz yok.</div>
+      <div *ngFor="let order of pastOrders" class="order-card">
+        <div class="order-header">
+          <span>Sipariş #{{ order.id }}</span>
+          <span class="order-status" [ngClass]="order.status">{{ order.status }}</span>
+        </div>
+        <div class="order-items">
+          <div *ngFor="let item of order.items" class="order-item">
+            <div class="product-name">{{ item.productName }}</div>
+            <div class="product-quantity">{{ item.quantity }} adet</div>
+            <div class="product-price">{{ item.unitPrice * item.quantity | currency: 'TRY' }}</div>
+          </div>
+        </div>
+        <div class="order-footer">
+          Toplam: <strong>{{ order.totalPrice | currency: 'TRY' }}</strong>
+        </div>
+      </div>
+    </ng-container>
+  </section>
 </div>

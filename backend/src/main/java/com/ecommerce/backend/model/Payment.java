@@ -4,11 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-/**
- * ✅ Payment — Siparişe ait ödeme bilgisini temsil eder.
- * - Ödeme tutarı, yöntemi, tarihi ve başarılı olup olmadığı bilgilerini içerir.
- * - Sipariş ve kullanıcıyla ilişkilidir.
- */
 @Entity
 public class Payment {
 
@@ -16,82 +11,49 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private double amount;              // 💰 Tutar
+    private double amount;
+    private String paymentMethod;
+    private LocalDateTime paymentDate;
 
-    private String paymentMethod;       // 💳 Ödeme yöntemi (ör: STRIPE, PAYPAL)
-
-    private boolean success;            // ✅ Başarılı mı?
-
-    private LocalDateTime paymentDate;  // 🕒 Tarih/zaman
+    @Column(name = "payment_intent_id")
+    private String paymentIntentId;
 
     @ManyToOne
-@JoinColumn(name = "order_id", nullable = false)
-private Order order;
+    @JoinColumn(name = "order_id", nullable = false)
+    private Order order;
+
+    @Column(name = "success")
+    private boolean success;
+
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonIgnore
     private User user;
 
-    // ——— Getter ve Setter’lar ———
+    // GETTER / SETTER
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public Long getId() {
-        return id;
-    }
+    public double getAmount() { return amount; }
+    public void setAmount(double amount) { this.amount = amount; }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    public String getPaymentMethod() { return paymentMethod; }
+    public void setPaymentMethod(String paymentMethod) { this.paymentMethod = paymentMethod; }
 
-    public double getAmount() {
-        return amount;
-    }
+    public boolean isSuccess() { return success; }
+    public void setSuccess(boolean success) { this.success = success; }
 
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
+    public LocalDateTime getPaymentDate() { return paymentDate; }
+    public void setPaymentDate(LocalDateTime paymentDate) { this.paymentDate = paymentDate; }
 
-    public String getPaymentMethod() {
-        return paymentMethod;
-    }
+    public Order getOrder() { return order; }
+    public void setOrder(Order order) { this.order = order; }
 
-    public void setPaymentMethod(String paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
 
-    public boolean isSuccess() {
-        return success;
-    }
-
-    public void setSuccess(boolean success) {
-        this.success = success;
-    }
-
-    public boolean getSuccess() {
-        return success;
-    }
-
-    public LocalDateTime getPaymentDate() {
-        return paymentDate;
-    }
-
-    public void setPaymentDate(LocalDateTime paymentDate) {
-        this.paymentDate = paymentDate;
-    }
-
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
+    public String getPaymentIntentId() { return paymentIntentId; }
+    public void setPaymentIntentId(String paymentIntentId) { this.paymentIntentId = paymentIntentId; }
+    
 }

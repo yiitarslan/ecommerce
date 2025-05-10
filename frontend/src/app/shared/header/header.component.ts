@@ -1,8 +1,8 @@
-// src/app/features/header/header.component.ts
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartService } from '../../core/services/cart.service';
-import { AuthService } from '../../core/services/auth.service';  // ← ekleyin
+import { AuthService } from '../../core/services/auth.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -10,30 +10,38 @@ import { AuthService } from '../../core/services/auth.service';  // ← ekleyin
   styleUrls: ['./header.component.scss'],
   standalone: false
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   isLoggedIn = false;
   userEmail = '';
   isDropdownOpen = false;
   searchText = '';
   cartItemCount = 0;
+  private authSub!: Subscription;
 
   constructor(
     private router: Router,
     private cartService: CartService,
-    private authService: AuthService      // ← ekleyin
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
-    const user = localStorage.getItem('user');
-    if (user) {
-      const parsed = JSON.parse(user);
-      this.isLoggedIn = true;
-      this.userEmail = parsed.email;
-    }
+    this.authSub = this.authService.isLoggedIn$.subscribe((status) => {
+      this.isLoggedIn = status;
+      if (status) {
+        const user = this.authService.getCurrentUser();
+        this.userEmail = user?.email || '';
+      } else {
+        this.userEmail = '';
+      }
+    });
 
     this.cartService.cartItemCount$.subscribe(count => {
       this.cartItemCount = count;
     });
+  }
+
+  ngOnDestroy(): void {
+    this.authSub.unsubscribe();
   }
 
   get displayName(): string {
@@ -51,16 +59,9 @@ export class HeaderComponent implements OnInit {
   }
 
   logout(): void {
-    // AuthService üzerinden çıkışı yapın
     this.authService.logout();
-
-    // Anasayfaya yönlendirip tam sayfa yenileyin
-    this.router.navigate(['/']).then(() => {
-      window.location.reload();
-    });
+    this.router.navigate(['/']);
   }
 
-  onSearchChange() {
-    // Arama tetikleyici
-  }
+  onSearchChange() {}
 }

@@ -17,6 +17,7 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -24,6 +25,7 @@ import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class PaymentService {
@@ -54,35 +56,31 @@ public class PaymentService {
 
     @PostConstruct
     public void init() {
-        System.out.println(">>> stripeSecretKey = " + stripeSecretKey);
+        Stripe.apiKey = stripeSecretKey;
     }
 
-    /**
-     * Stripe ile ödeme intent oluşturur ve clientSecret'ı frontend'e döner.
-     */
     public Map<String, String> processStripePayment(PaymentRequest request) {
         Stripe.apiKey = stripeSecretKey;
 
         try {
             PaymentIntentCreateParams params = PaymentIntentCreateParams.builder()
-                    .setAmount((long) (request.getAmount() * 100))  // cent
+                    .setAmount((long) (request.getAmount() * 100))
                     .setCurrency("usd")
                     .addPaymentMethodType("card")
                     .setDescription("E-ticaret Stripe Ödemesi")
                     .build();
 
             PaymentIntent intent = PaymentIntent.create(params);
-            return Map.of("clientSecret", intent.getClientSecret());
+            return Map.of(
+                    "clientSecret", intent.getClientSecret(),
+                    "paymentIntentId", intent.getId()
+            );
 
         } catch (StripeException e) {
             throw new RuntimeException("Stripe ödeme hatası: " + e.getMessage());
         }
     }
 
-    /**
-     * Ödeme işlemini veritabanına işler.
-     * Eğer Stripe sonucu başarısızsa sipariş durumu değişmez.
-     */
     public Payment processPayment(User user, PaymentRequest request) {
         Order order = orderRepo.findById(request.getOrderId())
                 .orElseThrow(() -> new RuntimeException("Sipariş bulunamadı"));
@@ -101,20 +99,18 @@ public class PaymentService {
         payment.setAmount(request.getAmount());
         payment.setPaymentMethod(request.getPaymentMethod());
         payment.setPaymentDate(LocalDateTime.now());
+        payment.setPaymentIntentId(request.getPaymentIntentId());
 
-        // Stripe ödemesi başarısızsa direkt başarısız işaretle
         if (request.getSuccess() != null && !request.getSuccess()) {
             payment.setSuccess(false);
             return paymentRepo.save(payment);
         }
 
-        // Tutar uyuşmazlığı varsa yine başarısız
         if (request.getAmount() != expectedAmount) {
             payment.setSuccess(false);
             return paymentRepo.save(payment);
         }
 
-        // Başarılı ise sipariş durumu güncellenir
         payment.setSuccess(true);
         paymentRepo.save(payment);
 
@@ -128,7 +124,6 @@ public class PaymentService {
     public Payment processPayPalPayment(PaymentRequest request) {
         try {
             String accessToken = payPalAccessTokenService.getAccessToken();
-
             HttpClient client = HttpClient.newHttpClient();
             ObjectMapper mapper = new ObjectMapper();
 
@@ -155,16 +150,9 @@ public class PaymentService {
 
             HttpResponse<String> response = client.send(httpRequest, HttpResponse.BodyHandlers.ofString());
 
-            if (response.statusCode() == 201) {
-                System.out.println("✅ PayPal siparişi oluşturuldu.");
-                request.setSuccess(true);
-            } else {
-                System.out.println("❌ PayPal API hatası: " + response.body());
-                request.setSuccess(false);
-            }
+            request.setSuccess(response.statusCode() == 201);
 
         } catch (Exception e) {
-            System.out.println("❌ PayPal istisnası: " + e.getMessage());
             request.setSuccess(false);
         }
 
@@ -174,6 +162,30 @@ public class PaymentService {
         return processPayment(user, request);
     }
 
+    public void refundStripePayment(Long paymentId) throws StripeException {
+        Payment payment = paymentRepo.findById(paymentId)
+                .orElseThrow(() -> new RuntimeException("Ödeme bulunamadı"));
+
+        if (!payment.isSuccess()) {
+            throw new RuntimeException("Sadece başarılı ödemeler iade edilebilir.");
+        }
+
+        if (payment.getPaymentIntentId() == null) {
+            throw new RuntimeException("paymentIntentId mevcut değil.");
+        }
+
+        Stripe.apiKey = stripeSecretKey;
+        Map<String, Object> params = Map.of("payment_intent", payment.getPaymentIntentId());
+        com.stripe.model.Refund.create(params);
+
+        payment.setSuccess(false);
+        paymentRepo.save(payment);
+
+        Order order = payment.getOrder();
+        order.setStatus(OrderStatus.CANCELLED);
+        orderRepo.save(order);
+    }
+
     public List<Payment> getAllPayments() {
         return paymentRepo.findAll();
     }
@@ -181,4 +193,8 @@ public class PaymentService {
     public Payment getPaymentById(Long id) {
         return paymentRepo.findById(id).orElse(null);
     }
+
+    public Optional<Payment> getPaymentByOrderId(Long orderId) {
+    return paymentRepo.findByOrderId(orderId);
+}
 }

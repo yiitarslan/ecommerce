@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/payments")
@@ -37,9 +38,6 @@ public class PaymentController {
         return ResponseEntity.ok(saved);
     }
 
-    /**
-     * Stripe PaymentIntent oluşturur → clientSecret döner
-     */
     @PostMapping("/stripe")
     public ResponseEntity<?> makeStripePayment(@RequestBody PaymentRequest request) {
         if (request.getUserId() == null || request.getOrderId() == null) {
@@ -51,7 +49,7 @@ public class PaymentController {
 
         try {
             Map<String, String> result = paymentService.processStripePayment(request);
-            return ResponseEntity.ok(result); // 🔥 clientSecret frontend'e gidiyor
+            return ResponseEntity.ok(result); // clientSecret ve paymentIntentId frontend'e gönderilir
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("error", e.getMessage()));
@@ -89,4 +87,27 @@ public class PaymentController {
         }
         return ResponseEntity.ok(payment);
     }
+
+    @PostMapping("/refund/{paymentId}")
+    public ResponseEntity<?> refundPayment(@PathVariable Long paymentId) {
+        try {
+            paymentService.refundStripePayment(paymentId);
+            return ResponseEntity.ok(Map.of("message", "İade işlemi başarılı"));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @GetMapping("/byOrder/{orderId}")
+    public ResponseEntity<?> getPaymentByOrderId(@PathVariable Long orderId) {
+    Optional<Payment> optionalPayment = paymentService.getPaymentByOrderId(orderId);
+
+    if (optionalPayment.isPresent()) {
+        return ResponseEntity.ok(optionalPayment.get());
+    } else {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Map.of("error", "Ödeme bulunamadı"));
+    }
+}
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, tap, throwError } from 'rxjs';
+import { Observable, BehaviorSubject, catchError, tap, throwError } from 'rxjs';
 
 export interface RegisterRequest {
   fullName: string;
@@ -33,43 +33,47 @@ export interface LoginResponse {
 export class AuthService {
   private apiUrl = 'http://localhost:8080/api/auth';
 
+  // 🔥 Oturum durumunu anlık takip etmek için
+  private isLoggedInSubject = new BehaviorSubject<boolean>(this.hasInitialToken());
+  isLoggedIn$ = this.isLoggedInSubject.asObservable();
+
   constructor(private http: HttpClient) {}
 
-  // ✅ Register
-  register(data: RegisterRequest): Observable<User> {
-    return this.http.post<User>(`${this.apiUrl}/register`, data).pipe(
-      tap((res) => {
-        localStorage.setItem('user', JSON.stringify(res));
-      }),
-      catchError((err) => {
-        console.error('Register error:', err);
-        return throwError(() => new Error(err.error || 'Kayıt başarısız'));
-      })
-    );
+  private hasInitialToken(): boolean {
+    return localStorage.getItem('user') !== null && localStorage.getItem('token') !== null;
   }
 
-  // ✅ Login (Artık LoginResponse alıyor)
+ register(data: RegisterRequest): Observable<User> {
+  return this.http.post<User>(`${this.apiUrl}/register`, data).pipe(
+    // ❌ localStorage'a yazma veya giriş durumu tetikleme yok
+    catchError((err) => {
+      console.error('Register error:', err);
+      return throwError(() => new Error(err.error || 'Kayıt başarısız'));
+    })
+  );
+}
+
+
   login(data: LoginRequest): Observable<LoginResponse> {
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, data).pipe(
       tap((res) => {
-        localStorage.setItem('token', res.token); // token ayrı
-        localStorage.setItem('user', JSON.stringify(res.user)); // user ayrı
+        localStorage.setItem('token', res.token);
+        localStorage.setItem('user', JSON.stringify(res.user));
+        this.isLoggedInSubject.next(true); // 🔁 Giriş anında güncelle
         console.log('🟢 Giriş başarılı:', res.user);
       }),
-      catchError((err) => {
-        console.error('Login error:', err);
-        return throwError(() => new Error(err.error || 'Giriş başarısız'));
-      })
+      catchError((err) => throwError(() => new Error(err.error || 'Giriş başarısız')))
     );
   }
 
   logout(): void {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
+    this.isLoggedInSubject.next(false); // 🔁 Çıkışta sıfırla
   }
 
   isLoggedIn(): boolean {
-    return localStorage.getItem('user') !== null && localStorage.getItem('token') !== null;
+    return this.hasInitialToken();
   }
 
   getUser(): User | null {
@@ -88,7 +92,7 @@ export class AuthService {
   updateUser(id: number, updated: Partial<User>): Observable<User> {
     return this.http.put<User>(`${this.apiUrl}/${id}`, updated);
   }
-  
+
   getCurrentUser(): any {
     const user = localStorage.getItem('user');
     return user ? JSON.parse(user) : null;
