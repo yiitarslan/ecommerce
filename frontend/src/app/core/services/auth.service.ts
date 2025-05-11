@@ -97,4 +97,9 @@ export class AuthService {
     const user = localStorage.getItem('user');
     return user ? JSON.parse(user) : null;
   }
+
+  isAdmin(): boolean {
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  return user?.role === 'ADMIN';
+  }
 }

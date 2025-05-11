@@ -2,31 +2,40 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ProductService, Product } from '../../core/services/product.service';
 import { CartService } from '../../core/services/cart.service';
+import { ReviewService, Review } from '../../core/services/review.service.service';
+import { AuthService } from '../../core/services/auth.service'; // 🔹 EKLENDİ
 
 @Component({
   selector: 'app-product-detail',
-  standalone:false,
+  standalone: false,
   templateUrl: './product-detail.component.html',
   styleUrls: ['./product-detail.component.scss']
 })
 export class ProductDetailComponent implements OnInit {
   product: Product | null = null;
+  reviews: Review[] = [];
+  newComment: string = '';
+  newRating: number = 0;
+  isAdmin: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
-    private cartService: CartService
+    private cartService: CartService,
+    private reviewService: ReviewService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
+    this.isAdmin = this.authService.isAdmin(); // 🔹 Admin kontrolü
+
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
-      console.log('Gelen ID:', id);
       if (id) {
         this.productService.getById(+id).subscribe({
           next: (data) => {
-            console.log('Gelen ürün:', data);
             this.product = data;
+            this.loadReviews(+id);
           },
           error: (err) => {
             console.error('Ürün alınamadı:', err);
@@ -43,5 +52,47 @@ export class ProductDetailComponent implements OnInit {
     } else {
       alert('Ürün yüklenemedi, lütfen tekrar deneyin.');
     }
+  }
+
+  loadReviews(productId: number) {
+    this.reviewService.getReviewsByProduct(productId).subscribe({
+      next: (data) => this.reviews = data,
+      error: (err) => console.error('Yorumlar alınamadı:', err)
+    });
+  }
+
+  submitReview() {
+    if (!this.product) return;
+
+    const review: Review = {
+      comment: this.newComment,
+      rating: this.newRating,
+      product: { id: this.product.id },
+      user: { id: 2 } // TODO: login sonrası kullanıcı ID alınacak
+    };
+
+    this.reviewService.addReview(review).subscribe(() => {
+      this.newComment = '';
+      this.newRating = 0;
+      this.loadReviews(this.product!.id);
+    });
+  }
+
+  selectRating(star: number) {
+    this.newRating = star;
+  }
+
+  deleteReview(id: number) {
+    if (!confirm('Bu yorumu silmek istiyor musunuz?')) return;
+
+    this.reviewService.deleteReview(id).subscribe(() => {
+      this.reviews = this.reviews.filter(r => r.id !== id);
+    });
+  }
+
+  get averageRating(): number {
+    if (this.reviews.length === 0) return 0;
+    const total = this.reviews.reduce((sum, review) => sum + review.rating, 0);
+    return parseFloat((total / this.reviews.length).toFixed(1));
   }
 }

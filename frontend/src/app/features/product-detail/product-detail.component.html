@@ -1,20 +1,14 @@
 <section class="detail-wrapper" *ngIf="product as p">
   <div class="detail-card">
-    <!-- Sol taraf -->
     <div class="image-section">
       <img [src]="p.imageUrl" [alt]="p.name" />
     </div>
 
-    <!-- Sağ taraf -->
     <div class="info-section">
       <h2 class="title">{{ p.name }}</h2>
       <p class="category">{{ p.category.name | titlecase }}</p>
       <p class="price">{{ p.price | currency: 'TRY' }}</p>
-      <p class="description">
-        {{ p.description }}
-      </p>
-      
-
+      <p class="description">{{ p.description }}</p>
 
       <div class="size-select">
         <label>Beden:</label>
@@ -31,7 +25,46 @@
       </div>
 
       <button class="add-btn" (click)="sepeteEkle()">Sepete Ekle</button>
-
     </div>
+  </div>
+
+  <!-- Yorumlar -->
+  <div class="review-wrapper">
+    <h3>
+      Yorumlar
+      <span *ngIf="reviews.length > 0" class="average-rating">⭐ {{ averageRating }} / 5</span>
+    </h3>
+
+    <div *ngIf="reviews.length === 0" class="no-review">Henüz yorum yapılmamış.</div>
+
+    <ul class="review-list" *ngIf="reviews.length > 0">
+  <li *ngFor="let r of reviews">
+    <div class="review-header">
+      <span class="rating">⭐ {{ r.rating }}</span>
+      <span class="date">{{ r.createdAt | date: 'shortDate' }}</span>
+      <button *ngIf="isAdmin" class="delete-btn" (click)="deleteReview(r.id!)" title="Sil">❌</button>
+    </div>
+    <div class="comment">{{ r.comment }}</div>
+  </li>
+</ul>
+
+    <h4>Yorum Yap</h4>
+    <form (ngSubmit)="submitReview()">
+      <label class="rating-label">Puan:</label>
+      <div class="star-rating">
+        <ng-container *ngFor="let star of [1, 2, 3, 4, 5]">
+          <span (click)="selectRating(star)" [class.filled]="star <= newRating">&#9733;</span>
+        </ng-container>
+      </div>
+
+      <textarea
+        [(ngModel)]="newComment"
+        name="comment"
+        placeholder="Yorumunuzu yazın..."
+        required
+      ></textarea>
+
+      <button type="submit">Gönder</button>
+    </form>
   </div>
 </section>

@@ -6,7 +6,7 @@
   .detail-card {
     display: flex;
     gap: 3rem;
-    background: white;
+    background: #fff;
     border-radius: 2rem;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
     padding: 2.5rem;
@@ -22,7 +22,7 @@
     text-align: center;
 
     img {
-      max-height: 320px;
+      max-height: 400px;
       width: 100%;
       object-fit: contain;
       border-radius: 1rem;
@@ -34,17 +34,15 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    max-height: unset;       // değiştirilmiş
-    overflow: visible;
 
     .title {
-      font-size: 1.8rem;
+      font-size: 2rem;
       font-weight: 700;
       color: #333;
     }
 
     .category {
-      font-size: 0.95rem;
+      font-size: 1rem;
       color: #888;
     }
 
@@ -55,20 +53,18 @@
     }
 
     .description {
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       color: #555;
       line-height: 1.5;
-      margin-top: -0.5rem;
-      white-space: normal !important;
-      overflow: visible !important;
-      text-overflow: unset !important;
-      display: block;
-      word-break: break-word;
     }
-    
 
     .size-select {
       margin: 1rem 0;
+
+      label {
+        font-weight: 500;
+        margin-right: 0.5rem;
+      }
 
       .size-options {
         display: flex;
@@ -83,7 +79,7 @@
           transition: all 0.3s;
 
           &:hover {
-            background: #eee;
+            background: #f3f3f3;
           }
         }
       }
@@ -114,12 +110,169 @@
       padding: 0.8rem 1.5rem;
       border-radius: 30px;
       font-size: 1rem;
+      font-weight: 500;
       cursor: pointer;
       transition: background 0.3s;
 
       &:hover {
-        background: #5920b3;
+        background: #5121b5;
       }
     }
   }
+
+  .review-wrapper {
+    margin-top: 4rem;
+    background: #fefefe;
+    padding: 3rem;
+    border-radius: 2rem;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.03);
+
+    h3 {
+      font-size: 1.7rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: #222;
+    }
+
+    .no-review {
+      color: #999;
+      font-size: 0.95rem;
+    }
+
+    .review-list {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+
+      li {
+        background: #fafafa;
+        padding: 1.5rem;
+        border-radius: 1rem;
+        border: 1px solid #eee;
+        font-size: 1rem;
+        color: #333;
+        display: flex;
+        flex-direction: column;
+
+        .rating {
+          font-weight: 600;
+          color: #ffb703;
+          margin-bottom: 0.5rem;
+        }
+
+        .comment {
+          line-height: 1.5;
+        }
+      }
+    }
+
+    h4 {
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+      color: #444;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+
+      textarea {
+        padding: 1rem;
+        font-size: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 1rem;
+        background: #fcfcfc;
+        resize: vertical;
+        min-height: 100px;
+        transition: border-color 0.2s;
+
+        &:focus {
+          outline: none;
+          border-color: #6c2bd9;
+        }
+      }
+
+      input[type='number'] {
+        width: 100px;
+        padding: 0.6rem;
+        font-size: 1rem;
+        border: 1px solid #ddd;
+        border-radius: 1rem;
+        background: #fcfcfc;
+
+        &:focus {
+          outline: none;
+          border-color: #6c2bd9;
+        }
+      }
+
+      button[type='submit'] {
+        background: #6c2bd9;
+        color: white;
+        border: none;
+        padding: 0.8rem 1.6rem;
+        border-radius: 2rem;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        width: fit-content;
+        transition: background 0.3s;
+
+        &:hover {
+          background: #4d1bb2;
+        }
+      }
+    }
+  }
+
+  .star-rating {
+  display: flex;
+  gap: 0.5rem;
+  font-size: 1.8rem;
+  cursor: pointer;
+  margin-bottom: 1rem;
+
+  span {
+    color: #ccc;
+    transition: color 0.2s;
+
+    &.filled {
+      color: #ffb703;
+    }
+
+    &:hover {
+      color: #ffa500;
+    }
+  }
+}
+
+.rating-label {
+  font-weight: 500;
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+  display: block;
+}
+.average-rating {
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin-left: 1rem;
+  color: #ffb703;
+}
+
+.delete-btn {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  color: #e74c3c;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+
+  &:hover {
+    color: #c0392b;
+  }
+}
+
 }
