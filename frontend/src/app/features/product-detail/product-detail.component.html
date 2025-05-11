@@ -10,17 +10,20 @@
       <p class="price">{{ p.price | currency: 'TRY' }}</p>
       <p class="description">{{ p.description }}</p>
 
-      <div class="size-select">
+      <!-- 🔹 Beden seçimi -->
+      <div class="size-select" *ngIf="showSizeOptions()">
         <label>Beden:</label>
         <div class="size-options">
-          <button>S</button>
-          <button>M</button>
-          <button>L</button>
-          <button>XL</button>
+          <button 
+            *ngFor="let size of sizes" 
+            (click)="selectSize(size)" 
+            [ngClass]="{ 'selected': selectedSize === size }">
+            {{ size }}
+          </button>
         </div>
       </div>
 
-      <div class="size-guide-section">
+     <div class="size-guide-section" *ngIf="showSizeOptions()">
         <button class="toggle-guide">📏 Beden Kılavuzu</button>
       </div>
 
@@ -38,15 +41,15 @@
     <div *ngIf="reviews.length === 0" class="no-review">Henüz yorum yapılmamış.</div>
 
     <ul class="review-list" *ngIf="reviews.length > 0">
-  <li *ngFor="let r of reviews">
-    <div class="review-header">
-      <span class="rating">⭐ {{ r.rating }}</span>
-      <span class="date">{{ r.createdAt | date: 'shortDate' }}</span>
-      <button *ngIf="isAdmin" class="delete-btn" (click)="deleteReview(r.id!)" title="Sil">❌</button>
-    </div>
-    <div class="comment">{{ r.comment }}</div>
-  </li>
-</ul>
+      <li *ngFor="let r of reviews">
+        <div class="review-header">
+          <span class="rating">⭐ {{ r.rating }}</span>
+          <span class="date">{{ r.createdAt | date: 'shortDate' }}</span>
+          <button *ngIf="isAdmin" class="delete-btn" (click)="deleteReview(r.id!)" title="Sil">❌</button>
+        </div>
+        <div class="comment">{{ r.comment }}</div>
+      </li>
+    </ul>
 
     <h4>Yorum Yap</h4>
     <form (ngSubmit)="submitReview()">

@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { ProductService, Product } from '../../core/services/product.service';
 import { CartService } from '../../core/services/cart.service';
 import { ReviewService, Review } from '../../core/services/review.service.service';
-import { AuthService } from '../../core/services/auth.service'; // 🔹 EKLENDİ
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -18,6 +18,10 @@ export class ProductDetailComponent implements OnInit {
   newRating: number = 0;
   isAdmin: boolean = false;
 
+  // 🔹 Eklenen kısım
+  sizes: string[] = ['S', 'M', 'L', 'XL'];
+  selectedSize: string | null = null;
+
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
@@ -27,7 +31,7 @@ export class ProductDetailComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.isAdmin = this.authService.isAdmin(); // 🔹 Admin kontrolü
+    this.isAdmin = this.authService.isAdmin();
 
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
@@ -45,10 +49,17 @@ export class ProductDetailComponent implements OnInit {
     });
   }
 
+  // 🔹 Beden seçme
+  selectSize(size: string) {
+    this.selectedSize = size;
+  }
+
   sepeteEkle() {
-    if (this.product) {
+    if (this.product && this.selectedSize) {
       this.cartService.addToCart(this.product);
-      alert('Ürün sepete eklendi!');
+      alert(`Ürün (${this.selectedSize} beden) sepete eklendi!`);
+    } else if (!this.selectedSize) {
+      alert('Lütfen bir beden seçin.');
     } else {
       alert('Ürün yüklenemedi, lütfen tekrar deneyin.');
     }
@@ -95,4 +106,9 @@ export class ProductDetailComponent implements OnInit {
     const total = this.reviews.reduce((sum, review) => sum + review.rating, 0);
     return parseFloat((total / this.reviews.length).toFixed(1));
   }
+
+  showSizeOptions(): boolean {
+  const name = this.product?.category?.name?.toLowerCase()?.trim();
+  return name === "men's clothing" || name === "women's clothing";
+}
 }
