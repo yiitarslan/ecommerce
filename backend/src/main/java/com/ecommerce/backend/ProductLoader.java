@@ -27,27 +27,21 @@ public class ProductLoader implements CommandLineRunner {
             Category electronics = categoryRepo.save(new Category(null, "electronics"));
             Category jewelery = categoryRepo.save(new Category(null, "jewelery"));
 
-            // 🔹 Ürünleri ekle
-            productRepo.save(new Product(null, "Mens Casual Premium Slim Fit T-Shirts", "Slim-fitting style, contrast raglan long sleeve...", men, "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg", 22.3));
-            productRepo.save(new Product(null, "Mens Cotton Jacket", "Great outerwear jackets for Spring/Autumn...", men, "https://fakestoreapi.com/img/71li-ujtlUL._AC_UX679_.jpg", 55.99));
-            productRepo.save(new Product(null, "Mens Casual Slim Fit", "The color could be slightly different...", men, "https://fakestoreapi.com/img/71YXzeOuslL._AC_UY879_.jpg", 15.99));
-            productRepo.save(new Product(null, "John Hardy Women's Legends Naga...", "From our Legends Collection, the Naga was inspired...", jewelery, "https://fakestoreapi.com/img/71pWzhdJNwL._AC_UL640_QL65_ML3_.jpg", 695.0));
-            productRepo.save(new Product(null, "Solid Gold Petite Micropave", "Satisfaction Guaranteed. Return or exchange...", jewelery, "https://fakestoreapi.com/img/61sbMiUnoGL._AC_UL640_QL65_ML3_.jpg", 168.0));
-            productRepo.save(new Product(null, "White Gold Plated Princess", "Classic Created Wedding Engagement...", jewelery, "https://fakestoreapi.com/img/71YAIFU48IL._AC_UL640_QL65_ML3_.jpg", 9.99));
-            productRepo.save(new Product(null, "Pierced Owl Rose Gold Plated Stainless...", "Rose Gold Plated Double Flared Tunnel Plug...", jewelery, "https://fakestoreapi.com/img/51UDEzMJVpL._AC_UL640_QL65_ML3_.jpg", 10.99));
-            productRepo.save(new Product(null, "WD 2TB Elements Portable External Hard Drive", "USB 3.0 and USB 2.0 Compatibility Fast data transfers...", electronics, "https://fakestoreapi.com/img/61IBBVJvSDL._AC_SY879_.jpg", 64.0));
-            productRepo.save(new Product(null, "SanDisk SSD PLUS 1TB Internal SSD", "Easy upgrade for faster boot up...", electronics, "https://fakestoreapi.com/img/61U7T1koQqL._AC_SX679_.jpg", 109.0));
-            productRepo.save(new Product(null, "Silicon Power 256GB SSD 3D NAND", "3D NAND flash are applied to deliver high transfer speeds...", electronics, "https://fakestoreapi.com/img/71kWymZ+c+L._AC_SX679_.jpg", 109.0));
-            productRepo.save(new Product(null, "WD 4TB Gaming Drive Works with Playstation 4", "Expand your PS4 gaming experience...", electronics, "https://fakestoreapi.com/img/61mtL65D4cL._AC_SX679_.jpg", 114.0));
-            productRepo.save(new Product(null, "Acer SB220Q bi 21.5 inches Full HD Monitor", "21.5 inches Full HD (1920 x 1080) widescreen IPS display...", electronics, "https://fakestoreapi.com/img/81QpkIctqPL._AC_SX679_.jpg", 599.0));
-            productRepo.save(new Product(null, "Samsung 49-Inch CHG90 144Hz Curved Monitor", "49 INCH SUPER ULTRAWIDE 32:9 CURVED GAMING MONITOR...", electronics, "https://fakestoreapi.com/img/81Zt42ioCgL._AC_SX679_.jpg", 999.99));
-            productRepo.save(new Product(null, "BIYLACLESEN Women's 3-in-1 Snowboard Jacket", "Note:The Jackets is US standard size...", women, "https://fakestoreapi.com/img/51Y5NI-I5jL._AC_UX679_.jpg", 56.99));
-            productRepo.save(new Product(null, "Lock and Love Women's Removable Hooded Jacket", "Faux leather material for style and comfort...", women, "https://fakestoreapi.com/img/81XH0e8fefL._AC_UY879_.jpg", 29.95));
-            productRepo.save(new Product(null, "Rain Jacket Women Windbreaker", "Lightweight perfet for trip or casual wear...", women, "https://fakestoreapi.com/img/71HblAHs5xL._AC_UY879_-2.jpg", 39.99));
-            productRepo.save(new Product(null, "MBJ Women's Solid Short Sleeve", "95% RAYON 5% SPANDEX, Lightweight fabric with great stretch...", women, "https://fakestoreapi.com/img/71z3kpMAYsL._AC_UY879_.jpg", 9.85));
-            productRepo.save(new Product(null, "Opna Women's Short Sleeve Moisture", "100% Polyester, Machine wash, breathable with moisture wicking...", women, "https://fakestoreapi.com/img/51eg55uWmdL._AC_UX679_.jpg", 7.95));
-            productRepo.save(new Product(null, "DANVOUY Womens T Shirt Casual Cotton Short", "95%Cotton,5%Spandex, Casual, Short Sleeve, Letter Print...", women, "https://fakestoreapi.com/img/61pHAEJ4NML._AC_UX679_.jpg", 12.99));
-
+            productRepo.save(new Product(null, "Slim Fit Polo T-Shirt", "Soft cotton slim fit polo, perfect for summer.", men, "https://image.hm.com/assets/hm/1b/9a/1b9a40df036db9f0eeaf83ccda1a5c1445f1e93a.jpg?imwidth=564", 599.99));
+            productRepo.save(new Product(null, "Casual Denim Jacket", "Blue denim jacket with button closure.", women, "https://image.hm.com/assets/hm/ee/e2/eee238f747baf160799fb41bbf0635452b57fd8b.jpg?imwidth=564", 1199.99));
+            productRepo.save(new Product(null, "Basic White T-Shirt", "Essential white t-shirt with relaxed fit.", men, "https://image.hm.com/assets/hm/e4/af/e4af2eae840fddf244b30cb264ef4bf04e5c45b6.jpg?imwidth=564", 499.50));
+            productRepo.save(new Product(null, "Elegant Pearl Necklace", "Genuine freshwater pearls with silver clasp.", jewelery, "https://media.tiffany.com/is/image/Tiffany/EcomItemL2/tiffany-essential-pearlsnecklace-33475543_1045864_AV_1.jpg?&op_usm=1.0,1.0,6.0&defaultImage=NoImageAvailableInternal&&defaultImage=NoImageAvailableInternal&fmt=webp", 4999.90));
+            productRepo.save(new Product(null, "Crystal Stud Earrings", "Shiny zirconia studs with gold plating.", jewelery, "https://media.tiffany.com/is/image/Tiffany/EcomBrowseM/tiffany-victoriaearrings-38050982_1031018_ED.jpg?&defaultImage=NoImageAvailableInternal&&defaultImage=NoImageAvailableInternal&fmt=webp", 2099.99));
+            productRepo.save(new Product(null, "Stainless Steel Bracelet", "Minimalist bracelet with magnetic clasp.", jewelery, "https://fossil.scene7.com/is/image/FossilPartners/JF04697040_onmodelmale?$sfcc_onmodel_large$", 1300.99));
+            productRepo.save(new Product(null, "Bluetooth Wireless Earbuds", "Noise-cancelling true wireless earphones.", electronics, "https://productimages.hepsiburada.net/s/404/222-222/110000429711422.jpg/format:webp", 2999.00));
+            productRepo.save(new Product(null, "Gaming Mouse RGB", "Ergonomic mouse with customizable RGB lights.", electronics, "https://cdn.akakce.com/x/steelseries/steelseries-rival-3-rgb-optik-kablolu-oyuncu-mouse.jpg", 179.75));
+            productRepo.save(new Product(null, "Mechanical Keyboard", "Blue switch mechanical keyboard, full size.", electronics, "https://img.kwcdn.com/product/fancy/1169e2eb-5aa4-4ba4-862e-21809f136fc2.jpg?imageView2/2/w/800/q/70/format/webp",7000.00 ));
+            productRepo.save(new Product(null, "High-Waist Yoga Leggings", "Stretchy leggings for active movement.", women, "https://image.hm.com/assets/hm/3d/77/3d778d442905a56bc696e012b38785285095cb89.jpg?imwidth=564", 799.99));
+            productRepo.save(new Product(null, "Floral Summer Dress", "Light and flowy dress with floral print.", women, "https://image.hm.com/assets/hm/66/62/6662bd9013800add06657d15be2b601b975cb46f.jpg?imwidth=564", 640.50));
+            productRepo.save(new Product(null, "Padded Winter Coat", "Thick coat with detachable hood and zip.", women, "https://image.hm.com/assets/hm/ee/1d/ee1dd4f27bf0df84430e8c7e6b5676bdb0f3456a.jpg?imwidth=564", 1100.99));
+            productRepo.save(new Product(null, "Smart Fitness Watch", "Tracks heart rate, steps, and sleep.", electronics, "https://m.media-amazon.com/images/I/61rxpOKVuML._AC_UL320_.jpg", 6900.90));
+            productRepo.save(new Product(null, "Gold Chain Necklace", "18K gold plated chain, classic design.", jewelery, "https://fossil.scene7.com/is/image/FossilPartners/JF04612710_onmodel?$sfcc_onmodel_large$", 2300.99));
+            productRepo.save(new Product(null, "Graphic Print Hoodie", "Oversized hoodie with streetwear graphic.", men, "https://image.hm.com/assets/hm/36/cb/36cb1706ab581f1cc862de333eeb837113167376.jpg?imwidth=1260", 900.00));
             System.out.println("🟢 Kategoriler ve ürünler başarıyla yüklendi.");
         }
     }

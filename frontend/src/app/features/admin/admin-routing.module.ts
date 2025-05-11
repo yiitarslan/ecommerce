@@ -6,6 +6,7 @@ import { UserListComponent } from './pages/user-list/user-list.component';
 import { ProductListComponent } from './pages/product-list/product-list.component';
 import { AddSellerComponent } from './pages/add-seller/add-seller.component';
 import { OrderListComponent } from './pages/order-list/order-list.component';
+import { AdminAnalyticsComponent } from './pages/admin-analytics/admin-analytics.component';
 
 const routes: Routes = [
   {
@@ -20,11 +21,13 @@ const routes: Routes = [
           { path: 'users', component: UserListComponent },
           { path: 'products', component: ProductListComponent },
           { path: 'add-seller', component: AddSellerComponent },
-          { path: 'orders', component: OrderListComponent }
+          { path: 'orders', component: OrderListComponent },
+          { path: 'analytics', component: AdminAnalyticsComponent }
         ]
       }
     ]
-  }
+  },
+  { path: 'analytics', loadChildren: () => import('./pages/admin-analytics/admin-analytics.module').then(m => m.AdminAnalyticsModule) }
 ];
 
 

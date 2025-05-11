@@ -1,0 +1,21 @@
+<div class="analytics-grid" *ngIf="analytics">
+  <div class="chart-card">
+    <h3>Sipariş Sayısı</h3>
+    <canvas baseChart [type]="'bar'" [data]="orderChartData" [options]="chartOptions"></canvas>
+  </div>
+
+  <div class="chart-card">
+    <h3>Toplam Gelir</h3>
+    <canvas baseChart [type]="'bar'" [data]="revenueChartData" [options]="chartOptions"></canvas>
+  </div>
+
+  <div class="chart-card">
+    <h3>En Çok Satan Ürünler</h3>
+    <canvas baseChart [type]="'pie'" [data]="topProductChartData" [options]="chartOptions"></canvas>
+  </div>
+
+  <div class="chart-card">
+    <h3>En Aktif Müşteriler</h3>
+    <canvas baseChart [type]="'pie'" [data]="topCustomerChartData" [options]="chartOptions"></canvas>
+  </div>
+</div>
