@@ -17,12 +17,28 @@
   </nav>
 
   <div class="actions">
-    <input
-      [(ngModel)]="searchText"
-      (ngModelChange)="onSearchChange()"
-      placeholder="Ürün ara..."
-      class="search-input"
-    />
+  <div class="search-wrapper">
+  <input
+    [(ngModel)]="searchText"
+    (ngModelChange)="onSearchChange()"
+    placeholder="Ürün ara..."
+    class="search-input"
+  />
+
+  <!-- 🔽 Arama sonuçları -->
+  <div class="search-results" *ngIf="searchResults.length > 0">
+    <div
+      class="result-item"
+      *ngFor="let product of searchResults"
+      (click)="goToDetail(product.id)">
+      <img [src]="product.imageUrl" alt="{{ product.name }}" />
+      <div class="info">
+        <strong>{{ product.name }}</strong>
+        <span>{{ product.price | currency: 'TRY' }}</span>
+      </div>
+    </div>
+  </div>
+</div>
 
     <a routerLink="/sepetim" class="cart-btn">
       🛒 <span class="count">{{ cartItemCount }}</span>
