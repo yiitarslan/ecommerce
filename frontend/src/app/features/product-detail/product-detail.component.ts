@@ -55,15 +55,25 @@ export class ProductDetailComponent implements OnInit {
   }
 
   sepeteEkle() {
-    if (this.product && this.selectedSize) {
-      this.cartService.addToCart(this.product);
-      alert(`Ürün (${this.selectedSize} beden) sepete eklendi!`);
-    } else if (!this.selectedSize) {
+  const requiresSize = this.showSizeOptions();
+
+  if (this.product) {
+    if (requiresSize && !this.selectedSize) {
       alert('Lütfen bir beden seçin.');
-    } else {
-      alert('Ürün yüklenemedi, lütfen tekrar deneyin.');
+      return;
     }
+    
+    this.cartService.addToCart(this.product);
+    alert(
+      requiresSize
+        ? `Ürün (${this.selectedSize} beden) sepete eklendi!`
+        : 'Ürün sepete eklendi!'
+    );
+  } else {
+    alert('Ürün yüklenemedi, lütfen tekrar deneyin.');
   }
+}
+
 
   loadReviews(productId: number) {
     this.reviewService.getReviewsByProduct(productId).subscribe({

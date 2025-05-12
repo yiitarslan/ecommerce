@@ -7,6 +7,9 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 /**
  * ✅ Order — Her kullanıcıya ait bir siparişi temsil eder.
  * - Müşteri adı, sipariş kalemleri, toplam tutar ve sipariş durumu içerir.
@@ -30,7 +33,9 @@ public class Order {
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @OnDelete(action = OnDeleteAction.CASCADE) // Hibernate özelliği
     private User user;
+
 
     // 📦 Sipariş içeriği (birden fazla ürün olabilir)
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
