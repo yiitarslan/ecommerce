@@ -46,11 +46,14 @@ Stripe API
 🔹 Backend için:
 
 cd backend
+
 ./mvnw spring-boot:run
 
 🔹 Frontend için:
 
 cd frontend
+
 npm install
+
 ng serve
 
