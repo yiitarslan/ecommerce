@@ -1,59 +1,62 @@
-📦 E-Commerce Web Application
-Bu proje, Angular (Frontend) ve Spring Boot (Backend) teknolojileri kullanılarak geliştirilmiş bir tam kapsamlı e-ticaret platformudur.
+🛒 Full-Stack E-Commerce Platform
+Bu proje, Angular ve Spring Boot kullanılarak geliştirilmiş, ölçeklenebilir ve modüler yapıya sahip bir tam kapsamlı e-ticaret platformudur. Kullanıcı, satıcı ve yönetici rollerini destekleyen sistem; modern web teknolojileriyle responsive arayüz, güvenli kimlik doğrulama, dinamik ürün yönetimi ve entegre ödeme çözümleri sunar.
 
-🚀 Özellikler
-👤 Kullanıcı Girişi ve Kayıt Sistemi (JWT Doğrulamalı)
+🚀 Temel Özellikler
+Kimlik Doğrulama ve Yetkilendirme (JWT tabanlı)
 
-🛍️ Ürün Listeleme ve Detay Sayfaları
+Ürün Kataloğu: Listeleme, detay görüntüleme, filtreleme
 
-🛒 Sepet ve Sipariş Yönetimi
+Sepet ve Sipariş Yönetimi
 
-❤️ Favorilere Ekleme Sistemi
+Favori Ürünler Listesi
 
-💳 Stripe ile Ödeme Entegrasyonu
+Stripe Entegrasyonu ile online ödeme alma
 
-📊 Admin Paneli (Kullanıcı, Sipariş, Ürün Yönetimi)
+Yönetici Paneli: Kullanıcı, ürün ve sipariş denetimi
 
-📦 Satıcı Paneli (Ürün Ekleme/Düzenleme/Silme)
+Satıcı Paneli: Ürün ekleme, güncelleme ve silme
 
-📁 Modüler yapı ve Lazy Loading
+Grafik Tabanlı Yönetim Paneli (Sipariş, gelir, kullanıcı analitiği)
 
-📈 Admin Analytics Grafikleri
+Modüler Mimaride Lazy Loading Desteği
 
-🛠️ Kullanılan Teknolojiler
-Frontend:
-
+🧰 Teknoloji Yığını
+🔹 Frontend
 Angular 17
 
-SCSS
+SCSS & Responsive Tasarım
 
-Responsive Tasarım
+Component & Module Tabanlı Yapı
 
-Backend:
+Lazy Loading & Route Guard kullanımı
 
-Spring Boot 3
+🔹 Backend
+Spring Boot 3.x
 
-Spring Security (JWT)
+Spring Security & JWT Authentication
 
-Hibernate / JPA
+Hibernate / JPA & MySQL
 
-MySQL
+RESTful API mimarisi
 
-Stripe API
+Stripe SDK ile ödeme entegrasyonu
 
-🧪 Kurulum Talimatları
-
-🔹 Backend için:
+⚙️ Kurulum
+Backend (Spring Boot)
 
 cd backend
 
 ./mvnw spring-boot:run
 
-🔹 Frontend için:
+application.properties dosyasında veritabanı bağlantı bilgilerinizi güncellemeyi unutmayın.
+
+Frontend (Angular)
 
 cd frontend
 
 npm install
 
 ng serve
+
+Uygulama http://localhost:4200 adresinde çalışacaktır.
 
